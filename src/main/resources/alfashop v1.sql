@@ -3,7 +3,7 @@ CREATE TABLE usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     telefono VARCHAR(11),
     fecha_nacimiento DATE
@@ -92,7 +92,7 @@ INSERT INTO producto (nombre, descripcion, stock, precio, id_categoria) VALUES
 ('Mouse Gamer', 'Ratón inalámbrico para juegos con luces LED', 300, 59.99, 1);
 
 -- Inserciones en la tabla de Usuario
-INSERT INTO usuario (nombre, apellido, nombre_usuario, contrasena, telefono, fecha_nacimiento) VALUES
+INSERT INTO usuario (nombre, apellido, email, contrasena, telefono, fecha_nacimiento) VALUES
 ('Juan', 'Pérez', 'juanp', 'password123', '5551234567', '1990-05-15'),
 ('María', 'Gómez', 'mariag', 'password456', '5559876543', '1985-09-23');
 
