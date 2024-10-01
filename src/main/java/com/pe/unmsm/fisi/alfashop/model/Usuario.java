@@ -1,11 +1,10 @@
 package com.pe.unmsm.fisi.alfashop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -24,4 +23,6 @@ public class Usuario {
     private String contrasena;
     private String telefono;
     private Date fechaNacimiento;
+    @OneToMany (mappedBy = "usuario",cascade = CascadeType.REMOVE)
+    private List<Resena> resenas;
 }
