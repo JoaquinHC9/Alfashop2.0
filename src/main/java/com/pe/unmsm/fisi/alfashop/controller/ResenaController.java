@@ -1,14 +1,14 @@
 package com.pe.unmsm.fisi.alfashop.controller;
 
+import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaRequest;
 import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaResponse;
 import com.pe.unmsm.fisi.alfashop.model.Resena;
 import com.pe.unmsm.fisi.alfashop.service.ResenaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +28,12 @@ public class ResenaController {
             @PathVariable("id-producto") Integer idProducto
     ){
         return ResponseEntity.ok(resenaService.findResenaByProducto(idProducto));
+    }
+    @PostMapping("/crear")
+    public ResponseEntity<ResenaResponse> crearResena(
+            @RequestBody ResenaRequest resenaRequest
+        ){
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(resenaService.crearResena(resenaRequest));
     }
 }

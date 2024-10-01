@@ -1,5 +1,6 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
+import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaRequest;
 import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaResponse;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.ResenaMapper;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.ProductoRepository;
@@ -22,6 +23,7 @@ public class ResenaService {
     private final UsuarioRepository usuarioRepository;
     private final ProductoRepository productoRepository;
     private final ResenaMapper resenaMapper;
+
     public List<ResenaResponse> findResenaByUsuario(Integer id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(
@@ -46,5 +48,14 @@ public class ResenaService {
         return resenaList.stream()
                 .map(resenaMapper::toResenaResponse)
                 .toList();
+    }
+    public ResenaResponse crearResena(ResenaRequest resenaRequest) {
+        Usuario usuario = usuarioRepository.findById(resenaRequest.getIdUsuario())
+                .orElseThrow(() -> new EntityNotFoundException("No se puede crear la resena, usuario no encontrado"));
+        Producto producto = productoRepository.findById(resenaRequest.getIdProducto())
+                .orElseThrow(()-> new EntityNotFoundException("No se puede crear la resena, producto no encontrado"));
+        Resena resena = resenaMapper.toResena(resenaRequest, usuario, producto);
+        resenaRepository.save(resena);
+        return resenaMapper.toResenaResponse(resena);
     }
 }
