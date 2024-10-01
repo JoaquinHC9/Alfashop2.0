@@ -17,10 +17,16 @@ import java.util.List;
 @RequestMapping("/api-resenas/v1")
 public class ResenaController {
     private final ResenaService resenaService;
-    @GetMapping("/resena/{id-usuario}")
-    public ResponseEntity<List<ResenaResponse>> getResenas(
+    @GetMapping("/usuario/{id-usuario}")
+    public ResponseEntity<List<ResenaResponse>> getResenasByUsuario(
         @PathVariable("id-usuario") Integer idUsuario
     ){
         return ResponseEntity.ok(resenaService.findResenaByUsuario(idUsuario));
+    }
+    @GetMapping("/producto/{id-producto}")
+    public ResponseEntity<List<ResenaResponse>> getResenasByProducto(
+            @PathVariable("id-producto") Integer idProducto
+    ){
+        return ResponseEntity.ok(resenaService.findResenaByProducto(idProducto));
     }
 }
