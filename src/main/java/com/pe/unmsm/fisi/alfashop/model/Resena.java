@@ -2,6 +2,7 @@ package com.pe.unmsm.fisi.alfashop.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 public class Resena {
     @Id
     private Integer idResena;
-    private String Comentario;
+    private String comentario;
     private BigDecimal puntuacion;
     @ManyToOne
     @JoinColumn (name="id_usuario")
