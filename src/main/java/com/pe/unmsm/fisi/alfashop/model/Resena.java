@@ -1,10 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,6 +14,7 @@ import java.math.BigDecimal;
 @Entity
 public class Resena {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idResena;
     private String comentario;
     private BigDecimal puntuacion;
