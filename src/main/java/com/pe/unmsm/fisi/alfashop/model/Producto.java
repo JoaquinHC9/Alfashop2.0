@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +27,6 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name ="id_categoria")
     Categoria categoria;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
+    private List<Resena> resenas;
 }
