@@ -23,4 +23,7 @@ public class Resena {
     @ManyToOne
     @JoinColumn (name="id_usuario")
     private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 }

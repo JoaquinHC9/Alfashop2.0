@@ -63,19 +63,13 @@ CREATE TABLE pedido_producto (
 CREATE TABLE resena (
     id_resena INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
+    id_producto INT,  -- Relación directa con producto
     comentario TEXT,
     puntuacion NUMERIC(2,1),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (id_producto) REFERENCES producto(id_producto)  -- Relación directa con producto
 );
 
--- Tabla de Reseña-Producto
-CREATE TABLE producto_resena (
-    id_producto INT,
-    id_resena INT,
-    PRIMARY KEY (id_producto, id_resena),
-    FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-    FOREIGN KEY (id_resena) REFERENCES resena(id_resena)
-);
 -- Inserciones en la tabla de Categoría
 INSERT INTO categoria (nombre, descripcion) VALUES
 ('Electrónicos', 'Productos de tecnología como teléfonos, computadoras, etc.'),
@@ -114,11 +108,6 @@ INSERT INTO pedido_producto (cantidad, precio_total, id_pedido, id_producto) VAL
 (1, 5.99, 2, 5);    -- Hamburguesa en el segundo pedido
 
 -- Inserciones en la tabla de Reseña
-INSERT INTO resena (id_usuario, comentario, puntuacion) VALUES
-(1, 'El teléfono es increíble, muy rápido y buena batería.', 4.8),
-(2, 'La pizza estaba deliciosa, me gustó mucho la masa.', 4.5);
-
--- Inserciones en la tabla de Producto-Reseña
-INSERT INTO producto_resena (id_producto, id_resena) VALUES
-(1, 1),  -- Reseña del Smartphone
-(4, 2);  -- Reseña de la Pizza
+INSERT INTO resena (id_usuario, id_producto, comentario, puntuacion) VALUES
+ (1, 1, 'El teléfono es increíble, muy rápido y buena batería.', 4.8),
+ (2, 4, 'La pizza estaba deliciosa, me gustó mucho la masa.', 4.5);
