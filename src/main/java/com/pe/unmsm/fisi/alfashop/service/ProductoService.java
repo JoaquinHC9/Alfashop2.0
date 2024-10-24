@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,15 @@ public class ProductoService {
     private final ProductoRepository productoRepository;
     private final ProductoMapper productoMapper;
     private final CategoriaRepository categoriaRepository;
+
+    public List<ProductResponse> findAll() {
+        return productoRepository.findAll()
+                .stream()
+                .map(productoMapper::toProductResponse)
+                .collect(Collectors.toList());
+    }
+
+
     public ProductCatResponse findById(Integer id) {
         return productoRepository.findById(id)
                 .map(productoMapper::toProductCatResponse)

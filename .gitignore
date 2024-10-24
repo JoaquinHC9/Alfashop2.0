@@ -18,7 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
-
+#sonnar
+sonar-project.properties
+.scannerwork
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
