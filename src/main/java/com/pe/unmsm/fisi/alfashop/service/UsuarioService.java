@@ -6,6 +6,7 @@ import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
 import com.pe.unmsm.fisi.alfashop.model.Rol;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;
 import com.pe.unmsm.fisi.alfashop.security.RolEnum;
+import com.pe.unmsm.fisi.alfashop.security.exception.UsuarioRegistradoExcepcion;
 import com.pe.unmsm.fisi.alfashop.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,10 +27,12 @@ public class UsuarioService {
     private final UserDetailsService userDetailsService;
     private final JwtProvider jwtProvider;
     public String register(RegistroRequest request) {
-        if (request==null) return null;
+        if (request==null) {
+            throw new IllegalArgumentException("Hubo un error al registrar el usuario");
+        }
         boolean existe = usuarioRepository.findByEmail(request.getEmail()).isPresent();
         if (existe) {
-            return "El usuario ya existe";
+            throw new UsuarioRegistradoExcepcion("El email solicitado ya existe!");
         }
         Rol rolUsario = new Rol();
         rolUsario.setRolEnum(RolEnum.ROL_USUARIO);
@@ -44,12 +47,12 @@ public class UsuarioService {
                 .roles(Collections.singleton(rolUsario))
                 .build();
         usuarioRepository.save(usuario);
-        return "usuario registrado";
+        return jwtProvider.generateToken(request.getEmail());
     }
     public String login(LoginRequest request) {
         String email = request.getEmail();
         Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() ->
-            new UsernameNotFoundException("El usuario no existe"));
+                new UsernameNotFoundException("El usuario no existe"));
         String contra = request.getContrasena();
         Authentication authentication = this.authenticate(email, contra);
         SecurityContextHolder.getContext().setAuthentication(authentication);

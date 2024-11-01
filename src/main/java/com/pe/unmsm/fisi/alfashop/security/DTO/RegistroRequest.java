@@ -11,7 +11,6 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class RegistroRequest {
-    private Integer idUsuario;
     @NotNull(message = "Usuario debe tener un nombre")
     private String nombre;
     @NotNull(message = "Usuario debe tener un apellido")
