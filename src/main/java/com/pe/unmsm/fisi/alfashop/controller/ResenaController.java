@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api-resenas/v1")
+@RequestMapping("v1/resenas")
 public class ResenaController {
     private final ResenaService resenaService;
     @GetMapping("/usuario/{id-usuario}")

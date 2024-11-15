@@ -111,3 +111,15 @@ INSERT INTO pedido_producto (cantidad, precio_total, id_pedido, id_producto) VAL
 INSERT INTO resena (id_usuario, id_producto, comentario, puntuacion) VALUES
  (1, 1, 'El teléfono es increíble, muy rápido y buena batería.', 4.8),
  (2, 4, 'La pizza estaba deliciosa, me gustó mucho la masa.', 4.5);
+
+create table rol(
+     id_rol int primary key auto_increment,
+     nombre varchar(255)
+);
+create table usuario_rol(
+    id_rol int,
+    id_usuario int,
+    foreign key (id_rol) references rol (id_rol),
+    foreign key (id_usuario) references usuario (id_usuario),
+    primary key (id_usuario,id_rol)
+);
