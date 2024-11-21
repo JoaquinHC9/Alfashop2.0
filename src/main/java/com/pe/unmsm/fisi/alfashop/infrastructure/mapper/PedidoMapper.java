@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class PedidoMapper {
     public PedidoResponse toPedidoResponse(Pedido pedido) {
         return new PedidoResponse(
-                Math.toIntExact(pedido.getIdPedido()),
+                pedido.getIdPedido(),
                 pedido.getMetodoPago(),
                 pedido.getTotalMonto(),
                 pedido.getEstado()
@@ -20,7 +20,6 @@ public class PedidoMapper {
     public Pedido toPedido(PedidoRequest pedidoRequest, Usuario usuario) {
         return Pedido.builder()
                 .metodoPago(pedidoRequest.getMetodoPago())
-                .totalMonto(pedidoRequest.getTotalMonto())
                 .usuario(usuario)
                 .build();
     }
