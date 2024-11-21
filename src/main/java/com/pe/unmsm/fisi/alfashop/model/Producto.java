@@ -29,4 +29,7 @@ public class Producto {
     Categoria categoria;
     @OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
     private List<Resena> resenas;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoProducto> pedidoProductos;
+
 }
