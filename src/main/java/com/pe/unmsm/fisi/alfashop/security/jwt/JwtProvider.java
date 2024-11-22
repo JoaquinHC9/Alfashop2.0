@@ -24,8 +24,15 @@ public class JwtProvider {
     private String privateKey;
     @Value("${jwt.expiration}")
     private long expiration;
+
+    private final UsuarioRepository usuarioRepository;
+
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
+
+        int userId = usuarioRepository.findUsuarioByEmail(email).getIdUsuario();
+        claims.put("userId", userId);
+
         return Jwts.builder()
                 .claims()
                 .add(claims)

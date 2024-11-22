@@ -63,6 +63,15 @@ public class PedidoService {
             Producto producto = productoRepository.findById(productoCompraRequest.getIdProducto())
                     .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado: " + productoCompraRequest.getIdProducto()));
 
+            // Verificar que haya suficiente stock
+            if (producto.getStock() < productoCompraRequest.getCantidad()) {
+                throw new IllegalArgumentException("Stock insuficiente para el producto: " + producto.getIdProducto());
+            }
+
+            // Reducir el stock del producto
+            producto.setStock(producto.getStock() - productoCompraRequest.getCantidad());
+            productoRepository.save(producto);
+
             // Calcular el precio total del producto basado en la cantidad
             BigDecimal precioTotalProducto = producto.getPrecio().multiply(BigDecimal.valueOf(productoCompraRequest.getCantidad()));
 
@@ -78,6 +87,7 @@ public class PedidoService {
             // Acumular el precio total en el monto del pedido
             totalMonto = totalMonto.add(precioTotalProducto);
         }
+
 
         // Actualizar el monto total del pedido
         pedido.setTotalMonto(totalMonto);

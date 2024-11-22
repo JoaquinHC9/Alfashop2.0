@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductoCompraRequest {
     private Integer idProducto;
-    private Double cantidad;
+    private Integer cantidad;
 }
