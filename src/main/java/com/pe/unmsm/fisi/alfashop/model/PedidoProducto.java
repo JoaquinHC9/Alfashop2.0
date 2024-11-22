@@ -24,6 +24,6 @@ public class PedidoProducto {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    private Double cantidad;
+    private Integer cantidad;
     private BigDecimal precioTotal;
 }
