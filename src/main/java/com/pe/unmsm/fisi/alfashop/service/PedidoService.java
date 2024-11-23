@@ -2,10 +2,7 @@ package com.pe.unmsm.fisi.alfashop.service;
 
 import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.*;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.PedidoMapper;
-import com.pe.unmsm.fisi.alfashop.infrastructure.repository.PedidoProductoRepository;
-import com.pe.unmsm.fisi.alfashop.infrastructure.repository.PedidoRepository;
-import com.pe.unmsm.fisi.alfashop.infrastructure.repository.ProductoRepository;
-import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
+import com.pe.unmsm.fisi.alfashop.infrastructure.repository.*;
 import com.pe.unmsm.fisi.alfashop.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,6 +21,7 @@ public class PedidoService {
     private final UsuarioRepository usuarioRepository;
     private final PedidoProductoRepository pedidoProductoRepository;
     private final ProductoRepository productoRepository;
+    private final PagoService pagoService;
 
     public List<PedidoResponse> findPedidosByUsuario(Integer id) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -92,6 +90,12 @@ public class PedidoService {
         // Actualizar el monto total del pedido
         pedido.setTotalMonto(totalMonto);
         pedido = pedidoRepository.save(pedido);
+        var nuevoPago = new PagoRequest(
+                totalMonto,
+                pedido.getMetodoPago(),
+                pedido.getIdPedido()
+        );
+        pagoService.createPago(nuevoPago,pedido);
 
         // Construir y devolver la respuesta
         return PedidoResponse.builder()
