@@ -1,4 +1,4 @@
-# Alfashop_Backend
+# Alfashop E-Commerce 
 - Proyecto desarrollado en Java Spring boot
 - Código de proyecto a ser analizado en SonarQube
 - Grupo 7
