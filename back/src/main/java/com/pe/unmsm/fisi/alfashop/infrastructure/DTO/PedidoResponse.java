@@ -19,4 +19,8 @@ public class PedidoResponse {
     private BigDecimal totalMonto;
     private String estado;
     private Date fechaCreacion;
+
+    public PedidoResponse() {
+
+    }
 }

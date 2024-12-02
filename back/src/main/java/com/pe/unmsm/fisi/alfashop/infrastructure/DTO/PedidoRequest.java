@@ -15,4 +15,8 @@ public class PedidoRequest {
     private Integer idUsuario;
     private MetodoPago metodoPago;
     private List<ProductoCompraRequest> productos;
+
+    public PedidoRequest() {
+
+    }
 }

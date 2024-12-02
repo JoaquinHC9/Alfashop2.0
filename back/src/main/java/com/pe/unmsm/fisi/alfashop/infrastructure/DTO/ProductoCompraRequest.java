@@ -10,4 +10,8 @@ import lombok.Setter;
 public class ProductoCompraRequest {
     private Integer idProducto;
     private Integer cantidad;
+
+    public ProductoCompraRequest() {
+
+    }
 }
