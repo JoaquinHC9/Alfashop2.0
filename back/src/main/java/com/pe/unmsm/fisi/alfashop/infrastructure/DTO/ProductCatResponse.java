@@ -17,4 +17,8 @@ public class ProductCatResponse {
     Integer idCategoria;
     String nombreCategoria;
     String descripcionCategoria;
+
+    public ProductCatResponse() {
+
+    }
 }
