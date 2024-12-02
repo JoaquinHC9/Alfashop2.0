@@ -13,4 +13,8 @@ public class ResenaRequest {
     private Integer idProducto;
     private String comentario;
     private BigDecimal puntuacion;
+
+    public ResenaRequest() {
+
+    }
 }

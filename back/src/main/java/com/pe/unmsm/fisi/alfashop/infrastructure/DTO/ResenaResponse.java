@@ -14,4 +14,8 @@ public class ResenaResponse {
     private Integer idResena;
     private String comentario;
     private BigDecimal puntuacion;
+
+    public ResenaResponse() {
+
+    }
 }
