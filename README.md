@@ -5,4 +5,9 @@
 - Alumnos:
   - Joaquin Hidalgo Cock
   - Marko Rique Garcia
-- Curso Verificación y Validación
+  - Huaman Ortiz Emerson Raul
+  - Landeo Cuentas Sebastian
+  - Ore Paredes Gianfranco
+  - Palomino Julian Alex Marcelo
+- Curso: Verificación y Validación
+- Profesor: Edgar Sarmiento Calisaya 
