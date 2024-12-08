@@ -31,5 +31,6 @@ public class Producto {
     private List<Resena> resenas;
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoProducto> pedidoProductos;
-
+    @Column(name="imagen_url")
+    private String imagenUrl;
 }

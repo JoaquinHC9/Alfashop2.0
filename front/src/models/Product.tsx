@@ -7,4 +7,5 @@ export interface Product {
   idCategoria: number;
   nombreCategoria: string;
   descripcionCategoria: string;
+  imagenUrl: string;
 } 
