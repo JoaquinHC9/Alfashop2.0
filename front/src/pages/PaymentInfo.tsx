@@ -1,18 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography, Card, CardContent, Grid } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
+import { CreditCard, Payment, CheckCircle, Error } from '@mui/icons-material';
 import API_URL from '../config/config';
 import { useAuthUser } from 'react-auth-kit';
-import '../assets/styles/PaymentInfo.css';
-
-interface PaymentHistory {
-  idPedido: number;
-  metodoPago: string;
-  totalMonto: number;
-  estado: string;
-}
-
+import { PaymentHistoryData } from '../models/PaymentHistory';
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 const PaymentHistory: React.FC = () => {
-  const [payments, setPayments] = useState<PaymentHistory[]>([]);
+  const [payments, setPayments] = useState<PaymentHistoryData[]>([]);
   const [loading, setLoading] = useState(true);
   const auth = useAuthUser();
   const customerId = auth()?.customerId;
@@ -32,7 +26,7 @@ const PaymentHistory: React.FC = () => {
         });
 
         if (response.ok) {
-          const data: PaymentHistory[] = await response.json();
+          const data: PaymentHistoryData[] = await response.json();
           setPayments(data);
         } else {
           console.error('Error al obtener el historial de pagos:', response.statusText);
@@ -47,33 +41,102 @@ const PaymentHistory: React.FC = () => {
     fetchPaymentHistory();
   }, [customerId, token]);
 
+  const getPaymentIcon = (metodoPago: string) => {
+    switch (metodoPago) {
+      case 'PAYPAL':
+        return <Payment color="primary" />;
+      case 'CREDIT_CARD':
+      case 'VISA':
+      case 'MASTER_CARD':
+        return <CreditCard color="action" />;
+      case 'BITCOIN':
+        return <CurrencyBitcoinIcon color='action'/>; // Agregar un ícono de Bitcoin, necesitarás un ícono adecuado
+      default:
+        return <Payment color="disabled" />;
+    }
+  };
+
+  const getStatusIcon = (estado: string) => {
+    switch (estado) {
+      case 'APROBADO':
+        return <CheckCircle color="success" />;
+      case 'PENDIENTE':
+        return <Error color="warning" />;
+      case 'FALLIDO':
+        return <Error color="error" />;
+      default:
+        return <Error color="disabled" />;
+    }
+  };
+  const getEstadoColor = (estado: string) => {
+    switch (estado) {
+      case 'APROBADO':
+        return 'success.main'; // Verde para aprobado
+      case 'PENDIENTE':
+        return 'warning.main'; // Amarillo para pendiente
+      case 'FALLIDO':
+        return 'error.main'; // Rojo para fallido
+      default:
+        return 'text.secondary'; // Color secundario si el estado no coincide
+    }
+  };
+
   let paymentContent;
   if (loading) {
     paymentContent = <Typography>Cargando historial de pagos...</Typography>;
   } else if (payments.length > 0) {
     paymentContent = (
-      <Grid container spacing={3}>
+      <List sx={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}> {/* Ajustar el ancho de la lista */}
         {payments.map((payment) => (
-          <Grid item xs={12} sm={6} md={4} key={payment.idPedido}>
-            <Card className="payment-card">
-              <CardContent className="payment-card-content">
-                <Typography variant="h6">ID del Pedido: {payment.idPedido}</Typography>
-                <Typography>Método de Pago: {payment.metodoPago}</Typography>
-                <Typography>Total: ${payment.totalMonto.toFixed(2)}</Typography>
-                <Typography>Estado: {payment.estado}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <div key={payment.idPedido}>
+            <ListItem
+              sx={{
+                padding: 3, // Aumentar el padding
+                borderRadius: 1,
+                backgroundColor: 'background.paper',
+                boxShadow: 1,
+                marginBottom: 3, // Aumentar el margen entre elementos
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 'auto', marginRight: 3 }}>
+                {getPaymentIcon(payment.metodoPago)}
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography variant="h6" sx={{ fontSize: '1.2rem' }}>ID del Pedido: {payment.idPedido}</Typography>} // Aumentar tamaño de la fuente
+                secondary={
+                  <>
+                    <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>Método de Pago: {payment.metodoPago}</Typography> {/* Aumentar tamaño de la fuente */}
+                    <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.1rem' }}>
+                      Total: ${payment.totalMonto.toFixed(2)}
+                    </Typography>
+                    <Typography variant="body1" sx={{
+                      color: getEstadoColor(payment.estado),
+                      fontSize: '1.1rem', // Aumentar tamaño de la fuente
+                    }}>
+                      Estado: {payment.estado}
+                    </Typography>
+                  </>
+                }
+              />
+              <ListItemIcon sx={{ minWidth: 'auto' }}>
+                {getStatusIcon(payment.estado)}
+              </ListItemIcon>
+            </ListItem>
+            <Divider />
+          </div>
         ))}
-      </Grid>
+      </List>
     );
   } else {
     paymentContent = <Typography>No se encontró historial de pagos.</Typography>;
   }
 
   return (
-    <Box className="payment-info-container">
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ padding: 3 }}>
+      <Typography variant="h4" sx={{ marginBottom: 3, fontSize: '2rem', width:'600px',mt:8 }}> {/* Aumentar tamaño del título */}
         Historial de Pagos
       </Typography>
       {paymentContent}

@@ -14,6 +14,7 @@ public class ProductCatResponse {
     String descripcion;
     Integer stock;
     BigDecimal precio;
+    String imagenUrl;
     Integer idCategoria;
     String nombreCategoria;
     String descripcionCategoria;
