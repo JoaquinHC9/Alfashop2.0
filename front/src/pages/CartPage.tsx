@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { CartItem } from '../models/CartItem';
 import { Product } from '../models/Product';
 import { Helmet } from 'react-helmet';
-
+import { toast } from 'react-toastify';
 const Cart: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [productos, setProductos] = useState<Product[]>([]);
@@ -31,6 +31,13 @@ const Cart: React.FC = () => {
     setProductos(productsData);
   };
 
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => {
+      const product = productos.find(p => p.idProducto === item.idProducto);
+      return total + (product?.precio || 0) * item.cantidad;
+    }, 0).toFixed(2);
+  };
+
   const handleMetodoPagoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMetodoPago(event.target.value);
   };
@@ -39,6 +46,7 @@ const Cart: React.FC = () => {
     const updatedCart = cart.filter(item => item.idProducto !== idProducto);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+    toast.info(`Se ha eliminado el producto del carrito`, { autoClose: 10000 });
   };
 
   const createOrder = async () => {
@@ -74,8 +82,8 @@ const Cart: React.FC = () => {
           text: 'La orden de compra se ha registrado correctamente.',
         });
         localStorage.removeItem('cart');
-        setCart([]); 
-        setProductos([]); 
+        setCart([]);
+        setProductos([]);
       } else {
         Swal.fire({
           icon: 'error',
@@ -94,13 +102,12 @@ const Cart: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 'auto', paddingTop: 4, paddingBottom: 2, mt:5 }} disableGutters>
-        <Helmet>
-          <title>Carrito de compras</title>
-        </Helmet>
-      <Card sx={{ padding: 20, boxShadow: 3, borderRadius: 2, width: '100%', maxWidth: 1000, textAlign: 'center', backgroundColor: 'background.paper', mb: 2,mt:2 , height:'300px' }}>
-
-        <Typography variant="h4" color="primary" sx={{  fontWeight: 'bold' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 'auto', paddingTop: 4, paddingBottom: 2, mt: 5 }} disableGutters>
+      <Helmet>
+        <title>Carrito de compras</title>
+      </Helmet>
+      <Card sx={{ padding: 20, boxShadow: 3, borderRadius: 2, width: '100%', maxWidth: 1000, textAlign: 'center', backgroundColor: 'background.paper', mb: 2, mt: 2, height: '300px' }}>
+        <Typography variant="h4" color="primary" sx={{ fontWeight: 'bold' }}>
           Carrito de compras
         </Typography>
         <Typography variant="h6" color="textSecondary">
@@ -142,6 +149,15 @@ const Cart: React.FC = () => {
                 );
               })}
             </List>
+
+            <Typography
+            variant="h5"
+            align="right"
+            sx={{ mt: 2, fontWeight: 'bold' }}
+            title="total-price"
+          >
+            ${calculateTotal()}
+          </Typography>
 
             <Card variant="outlined" sx={{ mt: 3 }}>
               <CardContent>
