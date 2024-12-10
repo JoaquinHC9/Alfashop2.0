@@ -1,10 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.infrastructure.DTO;
 
 import com.pe.unmsm.fisi.alfashop.model.MetodoPago;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,6 +10,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class PedidoResponse {
     private Long idPedido;
     private MetodoPago metodoPago;
