@@ -5,6 +5,7 @@ import API_URL from '../config/config';
 import { useAuthUser } from 'react-auth-kit';
 import { PaymentHistoryData } from '../models/PaymentHistory';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+
 const PaymentHistory: React.FC = () => {
   const [payments, setPayments] = useState<PaymentHistoryData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,11 @@ const PaymentHistory: React.FC = () => {
 
         if (response.ok) {
           const data: PaymentHistoryData[] = await response.json();
-          setPayments(data);
+
+          // Ordenar los pagos por idPedido de manera descendente
+          const sortedData = data.sort((a, b) => b.idPedido - a.idPedido);
+
+          setPayments(sortedData);
         } else {
           console.error('Error al obtener el historial de pagos:', response.statusText);
         }
@@ -68,6 +73,7 @@ const PaymentHistory: React.FC = () => {
         return <Error color="disabled" />;
     }
   };
+
   const getEstadoColor = (estado: string) => {
     switch (estado) {
       case 'APROBADO':
@@ -86,30 +92,27 @@ const PaymentHistory: React.FC = () => {
     paymentContent = <Typography>Cargando historial de pagos...</Typography>;
   } else if (payments.length > 0) {
     paymentContent = (
-      <List sx={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}> {/* Ajustar el ancho de la lista */}
+      <List sx={{ width: '100%', maxWidth: 1200, margin: '0 auto' }} aria-label="Lista-Pagos">
         {payments.map((payment) => (
           <div key={payment.idPedido}>
             <ListItem
               sx={{
-                padding: 3, // Aumentar el padding
-                borderRadius: 1,
-                backgroundColor: 'background.paper',
-                boxShadow: 1,
-                marginBottom: 3, // Aumentar el margen entre elementos
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                padding: 3, borderRadius: 1, backgroundColor: 'background.paper',
+                boxShadow: 1, marginBottom: 3,  display: 'flex',
+                justifyContent: 'space-between', alignItems: 'center',
               }}
             >
               <ListItemIcon sx={{ minWidth: 'auto', marginRight: 3 }}>
                 {getPaymentIcon(payment.metodoPago)}
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="h6" sx={{ fontSize: '1.2rem' }}>ID del Pedido: {payment.idPedido}</Typography>} // Aumentar tamaño de la fuente
+                primary={<Typography variant="h6" sx={{ fontSize: '1.2rem' }}>ID del Pedido: {payment.idPedido}</Typography>} 
                 secondary={
                   <>
-                    <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>Método de Pago: {payment.metodoPago}</Typography> {/* Aumentar tamaño de la fuente */}
-                    <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.1rem' }}>
+                    <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>Método de Pago: {payment.metodoPago}</Typography> 
+                    <Typography variant="body1"
+                      aria-label={`Monto-Total`}
+                      sx={{ color: 'text.secondary', fontSize: '1.1rem' }}>
                       Total: ${payment.totalMonto.toFixed(2)}
                     </Typography>
                     <Typography variant="body1" sx={{

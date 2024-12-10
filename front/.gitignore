@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#reportes de pruebas
+reports
+test/mochawesome-report
+cypress/screenshots
+runner-results
