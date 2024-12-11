@@ -28,3 +28,7 @@ reports
 test/mochawesome-report
 cypress/screenshots
 runner-results
+.nyc_output
+.scannerwork
+coverage
+sonar-project.properties
