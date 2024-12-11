@@ -241,11 +241,11 @@ Proyecto desarrollado en Java Spring boot y React Vite (Typescript)
 - Curso: Verificación y Validación
 - Profesor: Edgar Sarmiento Calisaya
 
-# Jenkins Pipeline
+# 📜 Jenkins Pipeline
 
 Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop**. Incluye pasos para la construcción, pruebas, empaquetado y despliegue.
 
-## Configuración de Plugins
+## 🔧 Configuración de Plugins
 
 - **Git**
 - **JDK**
@@ -253,7 +253,7 @@ Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de
 - **SonarQube Scanner**
 - **NodeJs**
 
-## Etapas del Pipeline
+## 🛠️ Etapas del Pipeline
 
 Imagen de stage del pipeline
 
@@ -287,16 +287,16 @@ Realiza un análisis estático del backend utilizando SonarQube.
 
 ```bash
 stage("SonarQube-Analysis-Backend") {
-  steps {
-    dir('back') {
-      bat "mvn clean compile"
-      bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
-        "-Dsonar.projectKey=SonarQube-Analysis-Backend " +
-        "-Dsonar.projectName=SonarQube-Analysis-Backend " +
-        "-Dsonar.sources=. " +
-        "-Dsonar.java.binaries=target " +
-        "-Dsonar.host.url=http://localhost:9000 " +
-        "-Dsonar.login=<user_token>"
+    steps {
+        dir('back') {
+            bat "mvn clean compile"
+            bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
+                "-Dsonar.projectKey=SonarQube-Analysis-Backend " +
+                "-Dsonar.projectName=SonarQube-Analysis-Backend " +
+                "-Dsonar.sources=. " +
+                "-Dsonar.java.binaries=target " +
+                "-Dsonar.host.url=http://localhost:9000 " +
+                "-Dsonar.login=<user_token>"
     }
   }
 }
@@ -308,16 +308,16 @@ Realiza un análisis estático del frontend utilizando SonarQube.
 
 ```bash
 stage("SonarQube-Analysis-Frontend") {
-  steps {
-    dir('back') {
-      bat "mvn clean compile"
-      bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
-        "-Dsonar.projectKey=SonarQube-Analysis-Frontend " +
-        "-Dsonar.projectName=SonarQube-Analysis-Frontend " +
-        "-Dsonar.sources=. " +
-        "-Dsonar.java.binaries=target " +
-        "-Dsonar.host.url=http://localhost:9000 " +
-        "-Dsonar.login=<user_token>"
+    steps {
+        dir('back') {
+            bat "mvn clean compile"
+            bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
+                "-Dsonar.projectKey=SonarQube-Analysis-Frontend " +
+                "-Dsonar.projectName=SonarQube-Analysis-Frontend " +
+                "-Dsonar.sources=. " +
+                "-Dsonar.java.binaries=target " +
+                "-Dsonar.host.url=http://localhost:9000 " +
+                "-Dsonar.login=<user_token>"
     }
   }
 }
