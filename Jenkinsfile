@@ -5,22 +5,19 @@ pipeline {
         maven 'maven'
     }
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
-        BACKUP_PATH = "${WORKSPACE}/back/src/main/resources/backup.sql"
-        MYSQL_CONTAINER_NAME = 'mysqldb'
-        MYSQL_PASSWORD = 'root'
+        BACKUP_PATH = "${WORKSPACE}\\back\\src\\main\\resources\\backup.sql"
+        SCRIPT_PATH = "${WORKSPACE}\\restore_db.bat"
     }
     stages {
         stage("Git Checkout") {
             steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
+                git branch: 'jenkins', changelog: false, poll: false, url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
             }
         }
         stage('Clean and Build Backend') {
             steps {
                 script {
-                    dir('back'){
-                        // Limpiar e instalar el proyecto con Maven (backend en la carpeta 'back')
+                    dir('back') {
                         bat 'mvn clean install'
                     }
                 }
@@ -30,8 +27,7 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 script {
-                    dir('back'){
-                        // Construir la imagen de Docker para el backend (en la carpeta 'back')
+                    dir('back') {
                         bat 'docker build -t alfashop .'
                     }
                 }
@@ -41,20 +37,8 @@ pipeline {
         stage('Start Docker Compose (Backend + DB)') {
             steps {
                 script {
-                    dir('back'){
-                        // Levantar los contenedores con Docker Compose
+                    dir('back') {
                         bat 'docker-compose up -d'
-                    }
-                }
-            }
-        }
-
-        stage('Copy Backup to MySQL Container') {
-            steps {
-                script {
-                    dir('back'){
-                        // Copiar el archivo de backup al contenedor de MySQL
-                        bat "docker cp ${BACKUP_PATH} ${MYSQL_CONTAINER_NAME}:/tmp/backup.sql"
                     }
                 }
             }
@@ -63,13 +47,7 @@ pipeline {
         stage('Restore Database') {
             steps {
                 script {
-                    dir('back'){
-                    // Restaurar la base de datos desde el backup
-                    bat """
-                        docker exec ${MYSQL_CONTAINER_NAME} bash -c \"
-                        mysql -u root -p${MYSQL_PASSWORD} alfashop < /tmp/backup.sql\"
-                    """
-                    }
+                    bat "\"${SCRIPT_PATH}\" \"${BACKUP_PATH}\""
                 }
             }
         }
