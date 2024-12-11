@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useAuthUser } from 'react-auth-kit';
 
-const BASE_URL = 'http://localhost:8080/v1/';
+const BASE_URL = 'http://localhost:8083/v1/';
 
 const instance = axios.create({
   baseURL: BASE_URL,
