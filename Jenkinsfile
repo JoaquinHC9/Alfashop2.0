@@ -11,6 +11,7 @@ pipeline {
         SONAR_HOST_URL = 'http://localhost:9000'
         SONAR_TOKEN_BACK = 'sqp_14e0f96ce9faf919cbef6eca0a33c59c935975e1'
         SONAR_TOKEN_FRONT = 'sqp_8f4bbab464f0cf77f97a2724d5230ed5727a619d'
+        ZAP_DOCKER_IMAGE = 'ghcr.io/zaproxy/zaproxy:stable'
     }
     stages {
         stage("Git Checkout") {
@@ -22,7 +23,7 @@ pipeline {
             steps {
                 script {
                     dir('back') {
-                        bat 'mvn clean compile'
+                        bat 'mvn clean install'
                     }
                 }
             }
@@ -123,6 +124,14 @@ pipeline {
                     dir('front') {
                         bat 'npm run cy:run'
                     }
+                }
+            }
+        }
+        stage('Ejecutar Pruebas ZAP') {
+            steps {
+                script {
+                    bat "docker run -d -u zap --name zap --network host -v ${WORKSPACE}/zap/wrk:/zap/wrk/ -v ${WORKSPACE}/session:/zap/session/ ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://localhost:5173 -g gen.conf -r /zap/wrk/report.html"
+                    bat "docker wait zap"
                 }
             }
         }
