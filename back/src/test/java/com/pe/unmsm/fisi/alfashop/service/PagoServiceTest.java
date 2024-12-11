@@ -1,20 +1,21 @@
 package com.pe.unmsm.fisi.alfashop.service;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoRequest;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoResponse;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.PagoRepository;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.PagoMapper;
 import com.pe.unmsm.fisi.alfashop.model.Pago;
 import com.pe.unmsm.fisi.alfashop.model.Pedido;
-import com.pe.unmsm.fisi.alfashop.service.PagoService;
 import com.pe.unmsm.fisi.alfashop.model.MetodoPago;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PagoServiceTest {
-
+    private static final Logger logger = LoggerFactory.getLogger(PagoServiceTest.class);
     // Se asegura de que los mocks sean inicializados correctamente
     @Mock
     private PagoRepository pagoRepository;
@@ -34,25 +35,26 @@ class PagoServiceTest {
     @InjectMocks
     private PagoService pagoService;
 
-    private PagoRequest pagoRequest;
-    private Pedido pedido;
     private Pago pago;
 
     @BeforeEach
     void setUp() {
-        // Inicializa los mocks
-        MockitoAnnotations.openMocks(this);
+        // Usamos try-with-resources para asegurar el cierre de los mocks
+        try (var ignored = MockitoAnnotations.openMocks(this)) {
+            // Simula PagoRequest
+            PagoRequest pagoRequest = mock(PagoRequest.class);
+            when(pagoRequest.getTotalMonto()).thenReturn(new BigDecimal("150.75"));
+            when(pagoRequest.getMetodoPago()).thenReturn(MetodoPago.CREDIT_CARD);
+            when(pagoRequest.getIdPedido()).thenReturn(1L);
 
-        // Simula PagoRequest
-        pagoRequest = mock(PagoRequest.class);
-        when(pagoRequest.getTotalMonto()).thenReturn(new BigDecimal("150.75"));
-        when(pagoRequest.getMetodoPago()).thenReturn(MetodoPago.CREDIT_CARD);
-        when(pagoRequest.getIdPedido()).thenReturn(1L);
-
-        // Simula Pedido y Pago
-        pedido = mock(Pedido.class);
-        pago = mock(Pago.class);
+            // Simula Pedido y Pago
+            mock(Pedido.class);
+            pago = mock(Pago.class);
+        } catch (Exception e) {
+            logger.error("Error al inicializar los mocks", e);
+        }
     }
+
 
     @Test
     void testCreatePago() {
@@ -93,7 +95,7 @@ class PagoServiceTest {
     @Test
     void testFindPagosByPedidoId() {
         Integer pedidoId = 1;
-        List<Pago> pagos = Arrays.asList(pago);
+        List<Pago> pagos = Collections.singletonList(pago);
 
         // Simula que findPagosByPedido_IdPedido retorna una lista de pagos
         when(pagoRepository.findPagosByPedido_IdPedido(pedidoId)).thenReturn(pagos);

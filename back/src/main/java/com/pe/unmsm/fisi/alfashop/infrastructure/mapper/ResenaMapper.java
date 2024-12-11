@@ -1,7 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.infrastructure.mapper;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ResenaRequest;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ResenaResponse;
 import com.pe.unmsm.fisi.alfashop.model.Producto;
 import com.pe.unmsm.fisi.alfashop.model.Resena;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;

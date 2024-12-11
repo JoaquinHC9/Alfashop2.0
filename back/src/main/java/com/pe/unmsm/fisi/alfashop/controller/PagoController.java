@@ -1,7 +1,6 @@
 package com.pe.unmsm.fisi.alfashop.controller;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoResponse;
-import com.pe.unmsm.fisi.alfashop.model.Pago;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoResponse;
 import com.pe.unmsm.fisi.alfashop.service.PagoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

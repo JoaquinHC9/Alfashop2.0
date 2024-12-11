@@ -1,12 +1,11 @@
 package com.pe.unmsm.fisi.alfashop.infrastructure.mapper;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoRequest;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoResponse;
 import com.pe.unmsm.fisi.alfashop.model.Pago;
 import com.pe.unmsm.fisi.alfashop.model.Pedido;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Date;
 
 @Service

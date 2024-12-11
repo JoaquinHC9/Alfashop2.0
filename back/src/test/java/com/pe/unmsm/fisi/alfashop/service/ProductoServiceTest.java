@@ -1,7 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductCatResponse;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductCatResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductResponse;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.ProductoMapper;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.CategoriaRepository;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.ProductoRepository;

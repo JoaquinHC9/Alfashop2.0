@@ -1,12 +1,10 @@
 package com.pe.unmsm.fisi.alfashop.controller;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaResponse;
-import com.pe.unmsm.fisi.alfashop.model.Resena;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ResenaRequest;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ResenaResponse;
 import com.pe.unmsm.fisi.alfashop.service.ResenaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

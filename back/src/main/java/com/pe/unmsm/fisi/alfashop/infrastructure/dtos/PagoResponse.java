@@ -1,4 +1,4 @@
-package com.pe.unmsm.fisi.alfashop.infrastructure.DTO;
+package com.pe.unmsm.fisi.alfashop.infrastructure.dtos;
 
 import com.pe.unmsm.fisi.alfashop.model.MetodoPago;
 import lombok.AllArgsConstructor;
