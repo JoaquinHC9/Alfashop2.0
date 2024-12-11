@@ -1,7 +1,8 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
-import com.pe.unmsm.fisi.alfashop.security.DTO.LoginRequest;
-import com.pe.unmsm.fisi.alfashop.security.DTO.RegistroRequest;
+import com.pe.unmsm.fisi.alfashop.exceptions.InvalidCredentialsException;
+import com.pe.unmsm.fisi.alfashop.security.dtos.LoginRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.RegistroRequest;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
 import com.pe.unmsm.fisi.alfashop.model.Rol;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;
@@ -51,18 +52,20 @@ public class UsuarioService {
     }
     public String login(LoginRequest request) {
         String email = request.getEmail();
-        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException("El usuario no existe"));
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));
         String contra = request.getContrasena();
         Authentication authentication = this.authenticate(email, contra);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateToken(request.getEmail());
 
+        // Generar y devolver el token
+        return jwtProvider.generateToken(email);
     }
+
     public Authentication authenticate(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new RuntimeException("contrasena incorrecta");
+            throw new InvalidCredentialsException("La contraseña es incorrecta");
         }
         return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
     }

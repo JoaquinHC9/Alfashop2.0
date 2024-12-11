@@ -1,19 +1,16 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PagoResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoRequest;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.PagoResponse;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.PagoMapper;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.PagoRepository;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.PedidoRepository;
 import com.pe.unmsm.fisi.alfashop.model.Pago;
 import com.pe.unmsm.fisi.alfashop.model.Pedido;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +30,6 @@ public class PagoService {
         List<Pago> pagos = pagoRepository.findPagosByPedido_IdPedido(pedidoId);
 
         return pagos.stream()
-                .map(pagoMapper::toPagoResponse)
-                .collect(toList());
+                .map(pagoMapper::toPagoResponse).toList();
     }
 }

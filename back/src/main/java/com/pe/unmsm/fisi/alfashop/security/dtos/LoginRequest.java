@@ -1,4 +1,4 @@
-package com.pe.unmsm.fisi.alfashop.security.DTO;
+package com.pe.unmsm.fisi.alfashop.security.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

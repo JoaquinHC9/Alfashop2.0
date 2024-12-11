@@ -1,8 +1,8 @@
 package com.pe.unmsm.fisi.alfashop.infrastructure.mapper;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductCatResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductCatResponse;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductResponse;
 import com.pe.unmsm.fisi.alfashop.model.Producto;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.pe.unmsm.fisi.alfashop.security.DTO;
+package com.pe.unmsm.fisi.alfashop.security.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

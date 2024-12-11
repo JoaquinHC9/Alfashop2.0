@@ -1,7 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.security.controller;
 
-import com.pe.unmsm.fisi.alfashop.security.DTO.LoginRequest;
-import com.pe.unmsm.fisi.alfashop.security.DTO.RegistroRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.LoginRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.RegistroRequest;
 import com.pe.unmsm.fisi.alfashop.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.*;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.*;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.PedidoMapper;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.*;
 import com.pe.unmsm.fisi.alfashop.model.*;

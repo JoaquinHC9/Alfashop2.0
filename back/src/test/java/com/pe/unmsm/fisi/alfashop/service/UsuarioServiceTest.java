@@ -3,8 +3,8 @@ package com.pe.unmsm.fisi.alfashop.service;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
 import com.pe.unmsm.fisi.alfashop.model.Rol;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;
-import com.pe.unmsm.fisi.alfashop.security.DTO.LoginRequest;
-import com.pe.unmsm.fisi.alfashop.security.DTO.RegistroRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.LoginRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.RegistroRequest;
 import com.pe.unmsm.fisi.alfashop.security.RolEnum;
 import com.pe.unmsm.fisi.alfashop.security.exception.UsuarioRegistradoExcepcion;
 import com.pe.unmsm.fisi.alfashop.security.jwt.JwtProvider;
@@ -18,16 +18,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UsuarioServiceTest {
-
     @InjectMocks
     private UsuarioService usuarioService;
 
@@ -50,7 +49,12 @@ class UsuarioServiceTest {
 
     @Test
     void testRegisterSuccess() {
-        RegistroRequest request = new RegistroRequest("Juan", "Perez", "juan.perez@example.com", "123456", "987654321", new Date(1990, 11, 1));
+        // Crear LocalDate primero
+        LocalDate birthDate = LocalDate.of(1990, 12, 1); // Diciembre es el mes 12
+
+        // Convertir LocalDate a java.sql.Date
+        Date sqlDate = Date.valueOf(birthDate);
+        RegistroRequest request = new RegistroRequest("Juan", "Perez", "juan.perez@example.com", "123456", "987654321", sqlDate);
 
         when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(request.getContrasena())).thenReturn("encodedPassword");
@@ -65,7 +69,9 @@ class UsuarioServiceTest {
 
     @Test
     void testRegisterEmailAlreadyExists() {
-        RegistroRequest request = new RegistroRequest("Juan", "Perez", "juan.perez@example.com", "123456", "987654321", new Date(1990, 11, 1));
+        LocalDate birthDate = LocalDate.of(1990, 12, 1); // Diciembre es el mes 12
+        Date sqlDate = Date.valueOf(birthDate);
+        RegistroRequest request = new RegistroRequest("Juan", "Perez", "juan.perez@example.com", "123456", "987654321", sqlDate);
 
         when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(new Usuario()));
 
@@ -187,9 +193,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
         // Esperamos que se lance la excepción UsernameNotFoundException
-        assertThrows(UsernameNotFoundException.class, () -> {
-            usuarioService.login(request);
-        });
+        assertThrows(UsernameNotFoundException.class, () -> usuarioService.login(request));
     }
 
 

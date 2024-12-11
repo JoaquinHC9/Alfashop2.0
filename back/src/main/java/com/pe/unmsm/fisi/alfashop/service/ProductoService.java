@@ -1,7 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.service;
 
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductCatResponse;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ProductResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductCatResponse;
+import com.pe.unmsm.fisi.alfashop.infrastructure.dtos.ProductResponse;
 import com.pe.unmsm.fisi.alfashop.infrastructure.mapper.ProductoMapper;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.CategoriaRepository;
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.ProductoRepository;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,7 @@ public class ProductoService {
     public List<ProductResponse> findAll() {
         return productoRepository.findAll()
                 .stream()
-                .map(productoMapper::toProductResponse)
-                .collect(Collectors.toList());
+                .map(productoMapper::toProductResponse).toList();
     }
 
 
