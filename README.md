@@ -1,11 +1,15 @@
-# Alfashop E-Commerce 
+# Alfashop E-Commerce
+
 ## 📖 Descripción
+
 Alfashop es una plataforma en línea que permite a los usuarios explorar un catálogo de productos con descripciones, imágenes y precios, agregar artículos a un carrito de compras, y realizar pagos de manera segura mediante diversas opciones, como tarjetas de crédito. Además, ofrece funcionalidades como registro de usuarios y historial de compras.
 
 ## 🎯 Propósito
+
 El propósito de Alfashop es facilitar la compra y venta de productos o servicios de manera rápida, accesible y segura, brindando a los usuarios una experiencia eficiente que les permita adquirir lo que necesitan desde cualquier lugar, mientras las empresas amplían su alcance y optimizan sus procesos de ventas.
 
 ## 📋 Características Principales
+
 - **Catálogo de Productos**: Listado organizado con imágenes, descripciones detalladas, precios.
 - **Carrito de Compras**: Herramienta para seleccionar, gestionar y calcular el costo total de los productos antes de la compra.
 - **Pasarela de Pago**: Integración de métodos de pago seguros.
@@ -13,17 +17,19 @@ El propósito de Alfashop es facilitar la compra y venta de productos o servicio
 - **Seguridad**: Protección de datos personales.
 
 ## 🛠️ Tecnologías utilizadas
+
 - Spring Security con JWT
 - MySQL
 - JPA como ORM
 - Pruebas Unitarias Mockito
   - Reporte de Pruebas Unitarias con InteliJ
 - Mocha y Cypress
-  - Reporte de Pruebas con Mochawesome 
+  - Reporte de Pruebas con Mochawesome
 - SonarQube
 - Jenkins pipeline
 
 ## 📜 Estructura del proyecto
+
 ```
 Alfashop/
 ├───.scannerwork
@@ -70,7 +76,7 @@ Alfashop/
 │   │   │  │    		    │       ├──PedidoRepository.java
 │   │   │  │    		    │       ├──ProductoRepository.java
 │   │   │  │    		    │       ├──ResenaRepository.java
-│   │   │  │    		    │       └──UsuarioRepository.java 
+│   │   │  │    		    │       └──UsuarioRepository.java
 │   │   │  │    		    ├──model
 │   │   │  │    		    │   ├──Categoria.java
 │   │   │  │    		    │   ├──MetodoPago.java
@@ -110,7 +116,7 @@ Alfashop/
 │   │   │  │    		    │   ├──ResenaService.java
 │   │   │  │    		    │   └──UsuarioService.java
 │   │   │  │    		    └──AlfashopApplication.java
-│   │   │  │ 
+│   │   │  │
 │   │   │  └──resources
 │   │   │        ├──alfashop v1.sql
 │   │   │        ├──application.properties
@@ -220,7 +226,9 @@ Alfashop/
 ```
 
 ## 📊 Responsables
+
 Proyecto desarrollado en Java Spring boot y React Vite (Typescript)
+
 - Código de proyecto a ser analizado en SonarQube
 - Grupo 7
 - Alumnos:
@@ -231,4 +239,30 @@ Proyecto desarrollado en Java Spring boot y React Vite (Typescript)
   - Ore Paredes Gianfranco
   - Palomino Julian Alex Marcelo
 - Curso: Verificación y Validación
-- Profesor: Edgar Sarmiento Calisaya 
+- Profesor: Edgar Sarmiento Calisaya
+
+# Jenkins Pipeline
+
+Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop**. Incluye pasos para la construcción, pruebas, empaquetado y despliegue.
+
+## Configuración de Plugins
+
+- **Git**
+- **JDK**
+- **Maven**.
+- **SonarQube Scanner**
+- **NodeJs**
+
+## Etapas del Pipeline
+
+Imagen de stage del pipeline
+
+### 1. **Git Checkout**
+
+```bash
+stage("Git Checkout") {
+    steps {
+        git branch: 'master', url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
+    }
+}
+```
