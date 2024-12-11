@@ -121,7 +121,7 @@ pipeline {
             steps {
                 script {
                     dir('front') {
-                        bat 'npx cypress run --headed'
+                        bat 'npm cypress run --headed'
                     }
                 }
             }

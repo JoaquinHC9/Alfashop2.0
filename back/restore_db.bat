@@ -5,10 +5,6 @@ SET MYSQL_USER=root
 SET MYSQL_PASSWORD=root
 SET DB_NAME=alfashop
 
-:: Esperar 15 segundos para asegurarse de que la base de datos está lista
-echo Esperando 15 segundos para que la base de datos esté lista...
-timeout /t 15 > nul
-
 :: Copiar el archivo de backup al contenedor
 docker cp %BACKUP_FILE% %MYSQL_CONTAINER%:/tmp/backup.sql
 IF NOT %ERRORLEVEL% == 0 (
