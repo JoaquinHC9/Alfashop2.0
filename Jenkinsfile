@@ -87,15 +87,6 @@ pipeline {
                 }
             }
         }
-        
-
-        stage('Restaurar Database') {
-            steps {
-                script {
-                    bat "\"${SCRIPT_PATH}\" \"${BACKUP_PATH}\""
-                }
-            }
-        }
 
         stage('Construir Imagen Docker Frontend') {
             steps {
