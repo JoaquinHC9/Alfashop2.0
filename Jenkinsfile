@@ -107,6 +107,15 @@ pipeline {
                 }
             }
         }
+        stage('Actulizar Frontend') {
+            steps {
+                script {
+                    dir('front') {
+                        bat 'npm install'
+                    }
+                }
+            }
+        }
 
         stage('Ejecutar pruebas Funcionales') {
             steps {
