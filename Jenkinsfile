@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         BACKUP_PATH = "${WORKSPACE}\\back\\src\\main\\resources\\backup.sql"
-        SCRIPT_PATH = "${WORKSPACE}\\restore_db.bat"
+        SCRIPT_PATH = "${WORKSPACE}\\back\\restore_db.bat"
     }
     stages {
         stage("Git Checkout") {
