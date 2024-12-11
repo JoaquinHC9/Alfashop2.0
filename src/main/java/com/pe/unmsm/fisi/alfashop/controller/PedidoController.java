@@ -2,8 +2,6 @@ package com.pe.unmsm.fisi.alfashop.controller;
 
 import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PedidoRequest;
 import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.PedidoResponse;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaRequest;
-import com.pe.unmsm.fisi.alfashop.infrastructure.DTO.ResenaResponse;
 import com.pe.unmsm.fisi.alfashop.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

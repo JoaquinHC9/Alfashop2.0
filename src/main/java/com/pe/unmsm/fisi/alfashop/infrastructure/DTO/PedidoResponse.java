@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 public class PedidoResponse {
-    private Integer idPedido;
+    private Long idPedido;
     private String metodoPago;
     private BigDecimal totalMonto;
     private String estado;

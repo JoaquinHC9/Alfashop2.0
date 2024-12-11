@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 public class ResenaResponse {
-
     private Integer idResena;
     private String comentario;
     private BigDecimal puntuacion;

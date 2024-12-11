@@ -18,3 +18,4 @@ public class ProductCatResponse {
     String nombreCategoria;
     String descripcionCategoria;
 }
+
