@@ -18,32 +18,28 @@ pipeline {
                 git branch: 'jenkins', changelog: false, poll: false, url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
             }
         }
-        stage('Clean and Build Backend') {
+        stage('Limpiar y Construir Backend') {
             steps {
                 script {
                     dir('back') {
-                        bat 'mvn clean install'
+                        bat 'mvn clean compile'
                     }
                 }
             }
         }
-        stage("SonarQube Analysis Backend") {
+        stage('Test unitarios') {
             steps {
                 script {
                     dir('back') {
-                        bat "mvn clean verify sonar:sonar \
-                          -Dsonar.projectKey=AlfashopBackend \
-                          -Dsonar.projectName='AlfashopBackend' \
-                          -Dsonar.host.url=${SONAR_HOST_URL} \
-                          -Dsonar.token=${SONAR_TOKEN_BACK}"
+                        bat 'mvn test'
                     }
                 }
             }
         }
-        stage("SonarQube Analysis Frontend") {
+        stage("SonarQube Analisis Backend") {
             steps {
                 script {
-                    dir('front') {
+                    dir('back') {
                         bat "mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=AlfashopBackend \
                         -Dsonar.projectName='AlfashopBackend' \
@@ -54,14 +50,25 @@ pipeline {
                         -Dsonar.dynamicAnalysis=reuseReports \
                         -Dsonar.junit.reportsPath=target/test-classes \
                         -Dsonar.java.coveragePlugin=jacoco \
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml
-                        "
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml"
                     }
                 }
             }
         }
-
-        stage('Build Backend Docker Image') {
+        stage("SonarQube Analisis Frontend") {
+            steps {
+                script {
+                    dir('front') {
+                        bat " ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=AlfashopFrontend \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_TOKEN_FRONT}"
+                    }
+                }
+            }
+        }
+        stage('Construir Imagen Docker Backend') {
             steps {
                 script {
                     dir('back') {
@@ -71,7 +78,7 @@ pipeline {
             }
         }
 
-        stage('Start Docker Compose (Backend + DB)') {
+        stage('Levantar Docker') {
             steps {
                 script {
                     dir('back') {
@@ -80,15 +87,46 @@ pipeline {
                 }
             }
         }
+        
 
-        stage('Restore Database') {
+        stage('Restaurar Database') {
             steps {
                 script {
                     bat "\"${SCRIPT_PATH}\" \"${BACKUP_PATH}\""
                 }
             }
         }
-    }
+
+        stage('Construir Imagen Docker Frontend') {
+            steps {
+                script {
+                    dir('front') {
+                        bat 'docker build -t alfashop-front .'
+                    }
+                }
+            }
+        }
+
+        stage('Levantar Docker Frontend') {
+            steps {
+                script {
+                    dir('front') {
+                        bat 'docker-compose up -d'
+                    }
+                }
+            }
+        }
+
+        stage('Ejecutar pruebas Cypress') {
+            steps {
+                script {
+                    dir('front') {
+                        bat 'npx cypress run --headed'
+                    }
+                }
+            }
+        }
+    } 
     post {
         success {
             echo 'Proceso completado con éxito!'

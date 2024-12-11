@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  alfashop-front:
+    build: ./
+    container_name: "alfashop-front"    
+    ports:
+      - "5173:5173"
+    command: ["npm", "run", "dev"]
