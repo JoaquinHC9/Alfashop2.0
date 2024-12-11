@@ -117,11 +117,11 @@ pipeline {
             }
         }
 
-        stage('Ejecutar pruebas Cypress') {
+        stage('Ejecutar pruebas Funcionales') {
             steps {
                 script {
                     dir('front') {
-                        bat 'npm cypress run --headed'
+                        bat 'npm run cy:run'
                     }
                 }
             }
