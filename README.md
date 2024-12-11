@@ -266,3 +266,61 @@ stage("Git Checkout") {
     }
 }
 ```
+
+### 2. **Clean and build**
+
+```bash
+
+
+```
+
+### 3. **Unit test**
+
+```bash
+
+
+```
+
+### 4. **SonarQube Analysis Backend**
+
+Realiza un análisis estático del backend utilizando SonarQube.
+
+```bash
+stage("SonarQube-Analysis-Backend") {
+  steps {
+    dir('back') {
+      bat "mvn clean compile"
+      bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
+        "-Dsonar.projectKey=SonarQube-Analysis-Backend " +
+        "-Dsonar.projectName=SonarQube-Analysis-Backend " +
+        "-Dsonar.sources=. " +
+        "-Dsonar.java.binaries=target " +
+        "-Dsonar.host.url=http://localhost:9000 " +
+        "-Dsonar.login=<user_token>"
+    }
+  }
+}
+```
+
+### 5. **SonarQube Analysis Frontend**
+
+Realiza un análisis estático del frontend utilizando SonarQube.
+
+```bash
+stage("SonarQube-Analysis-Frontend") {
+  steps {
+    dir('back') {
+      bat "mvn clean compile"
+      bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
+        "-Dsonar.projectKey=SonarQube-Analysis-Frontend " +
+        "-Dsonar.projectName=SonarQube-Analysis-Frontend " +
+        "-Dsonar.sources=. " +
+        "-Dsonar.java.binaries=target " +
+        "-Dsonar.host.url=http://localhost:9000 " +
+        "-Dsonar.login=<user_token>"
+    }
+  }
+}
+```
+
+### 6. **Docker**
