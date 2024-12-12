@@ -6,6 +6,7 @@ import com.pe.unmsm.fisi.alfashop.model.Usuario;
 import com.pe.unmsm.fisi.alfashop.security.dtos.LoginRequest;
 import com.pe.unmsm.fisi.alfashop.security.dtos.RegistroRequest;
 import com.pe.unmsm.fisi.alfashop.security.RolEnum;
+import com.pe.unmsm.fisi.alfashop.security.dtos.TokenResponse;
 import com.pe.unmsm.fisi.alfashop.security.exception.UsuarioRegistradoExcepcion;
 import com.pe.unmsm.fisi.alfashop.security.jwt.JwtProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,12 +59,12 @@ class UsuarioServiceTest {
 
         when(usuarioRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(request.getContrasena())).thenReturn("encodedPassword");
-        when(jwtProvider.generateToken(request.getEmail())).thenReturn("jwtToken");
+        when(jwtProvider.generateToken(request.getEmail())).thenReturn(new TokenResponse("jwtToken"));
 
-        String token = usuarioService.register(request);
+        TokenResponse token = usuarioService.register(request);
 
         assertNotNull(token);
-        assertEquals("jwtToken", token);
+        assertEquals("jwtToken", token.getToken());
         verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
 
@@ -107,14 +108,14 @@ class UsuarioServiceTest {
         when(passwordEncoder.matches(request.getContrasena(), encryptedPassword)).thenReturn(true);
 
         // Configurar el mock del JwtProvider para generar el token
-        when(jwtProvider.generateToken(request.getEmail())).thenReturn("jwtToken");
+        when(jwtProvider.generateToken(request.getEmail())).thenReturn(new TokenResponse("jwtToken"));
 
         // Ejecutar el login
-        String token = usuarioService.login(request);
+        TokenResponse token = usuarioService.login(request);
 
         // Verificar que el token generado no es nulo y es correcto
         assertNotNull(token);
-        assertEquals("jwtToken", token);
+        assertEquals("jwtToken", token.getToken());
     }
 
 
@@ -231,14 +232,14 @@ class UsuarioServiceTest {
         when(passwordEncoder.matches(request.getContrasena(), encryptedPassword)).thenReturn(true);
 
         // Mockear el JWT Provider para devolver un token
-        when(jwtProvider.generateToken(request.getEmail())).thenReturn("jwtToken");
+        when(jwtProvider.generateToken(request.getEmail())).thenReturn(new TokenResponse("jwtToken"));
 
         // Ejecutar el login y verificar que el token sea generado
-        String token = usuarioService.login(request);
+        TokenResponse token = usuarioService.login(request);
 
         // Verificar que el token no es null y que es el esperado
         assertNotNull(token);
-        assertEquals("jwtToken", token);
+        assertEquals("jwtToken", token.getToken());
     }
 
 
@@ -278,14 +279,14 @@ class UsuarioServiceTest {
         when(userDetailsService.loadUserByUsername(request.getEmail())).thenReturn(userDetails);
 
         // Mock del JWT Provider
-        when(jwtProvider.generateToken(request.getEmail())).thenReturn("jwtToken");
+        when(jwtProvider.generateToken(request.getEmail())).thenReturn(new TokenResponse("jwtToken"));
 
         // Ejecutamos el login
-        String token = usuarioService.login(request);
+        TokenResponse token = usuarioService.login(request);
 
         // Verificamos que el token generado no sea nulo y es correcto
         assertNotNull(token);
-        assertEquals("jwtToken", token);
+        assertEquals("jwtToken", token.getToken());
     }
 
 
@@ -323,11 +324,5 @@ class UsuarioServiceTest {
         assertNotNull(authentication);
         assertEquals(username, authentication.getPrincipal());
     }
-
-
-
-
-
-
 
 }

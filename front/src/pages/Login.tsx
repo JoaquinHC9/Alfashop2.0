@@ -27,7 +27,7 @@ export default function Login() {
         email: username,
         contrasena: password,
       });      
-      return response.data;
+      return response.data.token;
     } catch (error) {
       console.log("Login Error:", error);
       throw error;
@@ -40,7 +40,6 @@ export default function Login() {
       if (data) {
         const token = data;
         const decodedToken = jwtDecode<CustomJwtPayload>(token);
-        console.log(decodedToken)
         const customerId = decodedToken.userId;
         const auth = signIn({
           token: token,

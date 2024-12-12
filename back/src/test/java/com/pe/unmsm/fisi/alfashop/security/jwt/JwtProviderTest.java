@@ -2,6 +2,7 @@ package com.pe.unmsm.fisi.alfashop.security.jwt;
 
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;
+import com.pe.unmsm.fisi.alfashop.security.dtos.TokenResponse;
 import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,13 +54,13 @@ class JwtProviderTest {
         when(usuarioRepository.findUsuarioByEmail(email)).thenReturn(usuario);
 
         // Act
-        String token = jwtProvider.generateToken(email);
+        TokenResponse token = jwtProvider.generateToken(email);
 
         // Verificar que el token no esté vacío
-        assertNotNull(token);
+        assertNotNull(token.getToken());
 
         // Verificar que el token es un JWT válido (estructura esperada: header.payload.signature)
-        String[] parts = token.split("\\.");
+        String[] parts = token.getToken().split("\\.");
         assertEquals(3, parts.length, "El token JWT debe tener 3 partes");
 
         // Verificar que el token contiene el userId en el payload (decodificando el payload del JWT)
@@ -83,8 +84,8 @@ class JwtProviderTest {
         when(usuarioRepository.findUsuarioByEmail(email)).thenReturn(usuario);
 
         // Act
-        String token = jwtProvider.generateToken(email);  // Usamos el token generado anteriormente
-        String extractedEmail = jwtProvider.extractEmail(token);
+        TokenResponse token = jwtProvider.generateToken(email);  // Usamos el token generado anteriormente
+        String extractedEmail = jwtProvider.extractEmail(token.getToken());
 
         // Assert
         assertEquals(email, extractedEmail);
@@ -107,13 +108,13 @@ class JwtProviderTest {
         when(usuarioRepository.findUsuarioByEmail(email)).thenReturn(usuario);
 
         // Genera el token usando el email simulado
-        String token = jwtProvider.generateToken(email);
+        TokenResponse token = jwtProvider.generateToken(email);
 
         // Simula el objeto UserDetails para la validación del token
         UserDetails userDetails = User.withUsername(email).password("").authorities("ROLE_USER").build();
 
         // Act
-        boolean isValid = jwtProvider.validateToken(token, userDetails);
+        boolean isValid = jwtProvider.validateToken(token.getToken(), userDetails);
 
         // Assert
         assertTrue(isValid);
@@ -136,13 +137,13 @@ class JwtProviderTest {
         when(usuarioRepository.findUsuarioByEmail(email)).thenReturn(usuario);
 
         // Generar el token con el email "test@example.com"
-        String token = jwtProvider.generateToken(email);
+        TokenResponse token = jwtProvider.generateToken(email);
 
         // Simula el objeto UserDetails con un email diferente, "other@example.com"
         UserDetails userDetails = User.withUsername(invalidEmail).password("").authorities("ROLE_USER").build();
 
         // Act
-        boolean isValid = jwtProvider.validateToken(token, userDetails);
+        boolean isValid = jwtProvider.validateToken(token.getToken(), userDetails);
 
         // Assert
         assertFalse(isValid);
