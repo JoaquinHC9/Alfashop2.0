@@ -2,6 +2,7 @@ package com.pe.unmsm.fisi.alfashop.security.controller;
 
 import com.pe.unmsm.fisi.alfashop.security.dtos.LoginRequest;
 import com.pe.unmsm.fisi.alfashop.security.dtos.RegistroRequest;
+import com.pe.unmsm.fisi.alfashop.security.dtos.TokenResponse;
 import com.pe.unmsm.fisi.alfashop.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final UsuarioService usuarioService;
     @PostMapping("/registrar")
-    public ResponseEntity<String> register(@RequestBody @Valid RegistroRequest userRequest) {
+    public ResponseEntity<TokenResponse> register(@RequestBody @Valid RegistroRequest userRequest) {
         return new ResponseEntity<>(usuarioService.register(userRequest), HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest userRequest) {
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest userRequest) {
         return new ResponseEntity<>(usuarioService.login(userRequest), HttpStatus.OK);
     }
 }

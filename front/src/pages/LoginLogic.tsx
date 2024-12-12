@@ -19,8 +19,8 @@ export const handleLogin = async (
       email: email,
       contrasena: password,
     });
-
-    const token = response.data;
+    
+    const token = response.data.token;
     const decodedToken = jwtDecode<CustomJwtPayload>(token);
     const customerId = decodedToken.userId;
 

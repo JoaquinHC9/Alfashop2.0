@@ -7,6 +7,7 @@ import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
 import com.pe.unmsm.fisi.alfashop.model.Rol;
 import com.pe.unmsm.fisi.alfashop.model.Usuario;
 import com.pe.unmsm.fisi.alfashop.security.RolEnum;
+import com.pe.unmsm.fisi.alfashop.security.dtos.TokenResponse;
 import com.pe.unmsm.fisi.alfashop.security.exception.UsuarioRegistradoExcepcion;
 import com.pe.unmsm.fisi.alfashop.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final JwtProvider jwtProvider;
-    public String register(RegistroRequest request) {
+    public TokenResponse register(RegistroRequest request) {
         if (request==null) {
             throw new IllegalArgumentException("Hubo un error al registrar el usuario");
         }
@@ -50,7 +51,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
         return jwtProvider.generateToken(request.getEmail());
     }
-    public String login(LoginRequest request) {
+    public TokenResponse login(LoginRequest request) {
         String email = request.getEmail();
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));

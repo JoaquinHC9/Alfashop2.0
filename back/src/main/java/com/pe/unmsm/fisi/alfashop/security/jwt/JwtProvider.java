@@ -1,6 +1,7 @@
 package com.pe.unmsm.fisi.alfashop.security.jwt;
 
 import com.pe.unmsm.fisi.alfashop.infrastructure.repository.UsuarioRepository;
+import com.pe.unmsm.fisi.alfashop.security.dtos.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -29,21 +30,21 @@ public class JwtProvider {
 
     private final UsuarioRepository usuarioRepository;
 
-    public String generateToken(String email) {
+    public TokenResponse generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
 
         int userId = usuarioRepository.findUsuarioByEmail(email).getIdUsuario();
         claims.put("userId", userId);
 
-        return Jwts.builder()
-                .claims()
-                .add(claims)
+        String token = Jwts.builder()
+                .claims(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+expiration*1000))
-                .and()
+                .expiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(getSignKey())
                 .compact();
+
+        return new TokenResponse(token);
     }
     private SecretKey getSignKey(){
         byte[] keyBytes  = Decoders.BASE64.decode(privateKey);
