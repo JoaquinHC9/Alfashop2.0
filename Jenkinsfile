@@ -9,14 +9,14 @@ pipeline {
         BACKUP_PATH = "${WORKSPACE}\\back\\src\\main\\resources\\backup.sql"
         SCRIPT_PATH = "${WORKSPACE}\\back\\restore_db.bat"
         SONAR_HOST_URL = 'http://localhost:9000'
-        SONAR_TOKEN_BACK = 'sqp_14e0f96ce9faf919cbef6eca0a33c59c935975e1'
-        SONAR_TOKEN_FRONT = 'sqp_8f4bbab464f0cf77f97a2724d5230ed5727a619d'
+        SONAR_TOKEN_BACK = 'sqp_e0a6342d53db0751ca639d2e125bd33028396290'
+        SONAR_TOKEN_FRONT = 'sqp_d777cff13bf260ed22d7e063d59092b4f1745def'
         ZAP_DOCKER_IMAGE = 'ghcr.io/zaproxy/zaproxy:stable'
     }
     stages {
         stage("Git Checkout") {
             steps {
-                git branch: 'jenkins', changelog: false, poll: false, url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
+                checkout scmGit(branches: [[name: '*/jenkins']], extensions: [], userRemoteConfigs: [[credentialsId: 'GithubToken', url: 'https://github.com/JoaquinHC9/Alfashop2.0']])
             }
         }
         stage('Limpiar y Construir Backend') {
@@ -64,7 +64,7 @@ pipeline {
                         -Dsonar.projectKey=AlfashopFrontend \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.exclusions=**/node_modules/** \
+                        -Dsonar.exclusions=**/node_modules/**,Dockerfile,docker-compose.yml \
                         -Dsonar.login=${SONAR_TOKEN_FRONT}"
                     }
                 }
