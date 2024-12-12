@@ -243,84 +243,276 @@ Proyecto desarrollado en Java Spring boot y React Vite (Typescript)
 
 # 📜 Jenkins Pipeline
 
-Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop**. Incluye pasos para la construcción, pruebas, empaquetado y despliegue.
+Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop 2.0**. Incluye pasos para la construcción, pruebas, análisis de calidad, empaquetado y despliegue.
 
-## 🔧 Configuración de Plugins
+## 🔧 Configuración de Herramientas
 
 - **Git**
 - **JDK**
-- **Maven**.
+- **Maven**
 - **SonarQube Scanner**
-- **NodeJs**
+- **Node.js**
+- **Docker**
+- **JMeter**
+- **OWASP ZAP**
 
 ## 🛠️ Etapas del Pipeline
 
-Imagen de stage del pipeline
-
 ### 1. **Git Checkout**
+
+Clona el repositorio desde la rama especificada.
 
 ```bash
 stage("Git Checkout") {
     steps {
-        git branch: 'master', url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
+        git branch: 'jenkins', changelog: false, poll: false, url: 'https://github.com/JoaquinHC9/Alfashop2.0.git'
     }
 }
 ```
 
-### 2. **Clean and build**
+---
+
+### 2. **Limpiar y Construir Backend**
+
+Compila el proyecto backend utilizando Maven.
 
 ```bash
-
-
+stage('Limpiar y Construir Backend') {
+    steps {
+        script {
+            dir('back') {
+                bat 'mvn clean install'
+            }
+        }
+    }
+}
 ```
 
-### 3. **Unit test**
+---
+
+### 3. **Test Unitarios**
+
+Ejecuta pruebas unitarias en el backend.
 
 ```bash
-
-
+stage('Test unitarios') {
+    steps {
+        script {
+            dir('back') {
+                bat 'mvn test'
+            }
+        }
+    }
+}
 ```
 
-### 4. **SonarQube Analysis Backend**
+---
+
+### 4. **SonarQube Análisis Backend**
 
 Realiza un análisis estático del backend utilizando SonarQube.
 
 ```bash
-stage("SonarQube-Analysis-Backend") {
+stage("SonarQube Analisis Backend") {
     steps {
-        dir('back') {
-            bat "mvn clean compile"
-            bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
-                "-Dsonar.projectKey=SonarQube-Analysis-Backend " +
-                "-Dsonar.projectName=SonarQube-Analysis-Backend " +
-                "-Dsonar.sources=. " +
-                "-Dsonar.java.binaries=target " +
-                "-Dsonar.host.url=http://localhost:9000 " +
-                "-Dsonar.login=<user_token>"
+        script {
+            dir('back') {
+                bat "mvn clean verify sonar:sonar \
+                -Dsonar.projectKey=AlfashopBackend \
+                -Dsonar.projectName='AlfashopBackend' \
+                -Dsonar.host.url=http://localhost:9000 \
+                -Dsonar.token=${SONAR_TOKEN_BACK} \
+                -Dsonar.language=java \
+                -Dsonar.tests=src/test \
+                -Dsonar.dynamicAnalysis=reuseReports \
+                -Dsonar.junit.reportsPath=target/test-classes \
+                -Dsonar.java.coveragePlugin=jacoco \
+                -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-report/jacoco.xml"
+            }
+        }
     }
-  }
 }
 ```
 
-### 5. **SonarQube Analysis Frontend**
+---
+
+### 5. **SonarQube Análisis Frontend**
 
 Realiza un análisis estático del frontend utilizando SonarQube.
 
 ```bash
-stage("SonarQube-Analysis-Frontend") {
+stage("SonarQube Analisis Frontend") {
     steps {
-        dir('back') {
-            bat "mvn clean compile"
-            bat "\"${SCANNER_HOME}/bin/sonar-scanner\" " +
-                "-Dsonar.projectKey=SonarQube-Analysis-Frontend " +
-                "-Dsonar.projectName=SonarQube-Analysis-Frontend " +
-                "-Dsonar.sources=. " +
-                "-Dsonar.java.binaries=target " +
-                "-Dsonar.host.url=http://localhost:9000 " +
-                "-Dsonar.login=<user_token>"
+        script {
+            dir('front') {
+                bat "${SCANNER_HOME}/bin/sonar-scanner \
+                -Dsonar.projectKey=AlfashopFrontend \
+                -Dsonar.sources=. \
+                -Dsonar.host.url=${SONAR_HOST_URL} \
+                -Dsonar.login=${SONAR_TOKEN_FRONT}"
+            }
+        }
     }
-  }
 }
 ```
 
-### 6. **Docker**
+---
+
+### 6. **Construir Imagen Docker Backend**
+
+Construye una imagen Docker para el backend.
+
+```bash
+stage('Construir Imagen Docker Backend') {
+    steps {
+        script {
+            dir('back') {
+                bat 'docker build -t alfashop .'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 7. **Levantar Docker Backend**
+
+Levanta los servicios del backend utilizando Docker Compose.
+
+```bash
+stage('Levantar Docker') {
+    steps {
+        script {
+            dir('back') {
+                bat 'docker-compose up -d'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 8. **Construir Imagen Docker Frontend**
+
+Construye una imagen Docker para el frontend.
+
+```bash
+stage('Construir Imagen Docker Frontend') {
+    steps {
+        script {
+            dir('front') {
+                bat 'docker build -t alfashop-front .'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 9. **Levantar Docker Frontend**
+
+Levanta los servicios del frontend utilizando Docker Compose.
+
+```bash
+stage('Levantar Docker Frontend') {
+    steps {
+        script {
+            dir('front') {
+                bat 'docker-compose up -d'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 10. **Actualizar Frontend**
+
+Instala las dependencias del frontend.
+
+```bash
+stage('Actualizar Frontend') {
+    steps {
+        script {
+            dir('front') {
+                bat 'npm install'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 11. **Pruebas Funcionales**
+
+Ejecuta pruebas funcionales utilizando Cypress.
+
+```bash
+stage('Pruebas Funcionales') {
+    steps {
+        script {
+            dir('front') {
+                bat 'npm run cy:run'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 12. **Pruebas de Rendimiento**
+
+Ejecuta pruebas de rendimiento utilizando JMeter.
+
+```bash
+stage('Pruebas de Rendimiento') {
+    steps {
+        script {
+            bat "${JMETER_HOME}/bin/jmeter.bat -n -t PruebasAlfashop.jmx -l results.jtl -e -o report"
+        }
+    }
+}
+```
+
+---
+
+### 13. **Pruebas de Seguridad OWASP ZAP**
+
+Ejecuta pruebas de seguridad utilizando OWASP ZAP.
+
+```bash
+stage('Ejecutar Pruebas ZAP') {
+    steps {
+        script {
+            bat "docker run -d -u zap --name zap --network host -v ${WORKSPACE}/zap/wrk:/zap/wrk/ -v ${WORKSPACE}/session:/zap/session/ ${ZAP_DOCKER_IMAGE} zap-baseline.py -t http://localhost:5173 -g gen.conf -r /zap/wrk/report.html"
+            bat "docker wait zap"
+        }
+    }
+}
+```
+
+---
+
+## 🟢 **Post Ejecución**
+
+- **Éxito**: Muestra un mensaje indicando que el proceso fue completado exitosamente.
+
+```bash
+success {
+    echo 'Proceso completado con éxito!'
+}
+```
+
+- **Fallo**: Muestra un mensaje indicando que hubo un error en el proceso.
+
+```bash
+failure {
+    echo 'Hubo un error en el proceso.'
+}
+```
