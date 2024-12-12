@@ -256,6 +256,7 @@ Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de
 - **JMeter**
 - **OWASP ZAP**
 - **Cypress**
+- **Flyway**
 
 ![img2.png](images/img2.png)
 
@@ -629,9 +630,12 @@ stage('Pruebas Funcionales') {
 
 Resultado pruebas Cypress
 
-Pruebas funcionales:
 ![img.png](images/img65.png)
+
+Pruebas funcionales:
+
 Cobertura de codigo
+
 ![img.png](images/img6.png)
 
 ---
