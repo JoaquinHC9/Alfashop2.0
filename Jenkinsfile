@@ -64,6 +64,7 @@ pipeline {
                         -Dsonar.projectKey=AlfashopFrontend \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.exclusions=**/node_modules/** \
                         -Dsonar.login=${SONAR_TOKEN_FRONT}"
                     }
                 }
@@ -108,16 +109,6 @@ pipeline {
                 }
             }
         }
-        stage('Actulizar Frontend') {
-            steps {
-                script {
-                    dir('front') {
-                        bat 'npm install'
-                    }
-                }
-            }
-        }
-
         stage('Pruebas Funcionales') {
             steps {
                 script {
