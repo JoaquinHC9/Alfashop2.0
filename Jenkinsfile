@@ -9,8 +9,8 @@ pipeline {
         BACKUP_PATH = "${WORKSPACE}\\back\\src\\main\\resources\\backup.sql"
         SCRIPT_PATH = "${WORKSPACE}\\back\\restore_db.bat"
         SONAR_HOST_URL = 'http://localhost:9000'
-        SONAR_TOKEN_BACK = 'sqp_e0a6342d53db0751ca639d2e125bd33028396290'
-        SONAR_TOKEN_FRONT = 'sqp_d777cff13bf260ed22d7e063d59092b4f1745def'
+        SONAR_TOKEN_BACK = 'sqp_b50a72e4eaf55a7362b508d9525e2ff1869f5287'
+        SONAR_TOKEN_FRONT = 'sqp_13daa7656b19665a14ccf041e5b58ba28df24a49'
         ZAP_DOCKER_IMAGE = 'ghcr.io/zaproxy/zaproxy:stable'
     }
     stages {
