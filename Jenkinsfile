@@ -130,7 +130,7 @@ pipeline {
         stage('Pruebas de Rendimiento') {
             steps {
                 script {
-                    bat "${env.JMETER_HOME}/jmeter.bat -n -t PruebasAlfashop -l results.jtl -e -o report"
+                    bat "${env.JMETER_HOME}/jmeter.bat -n -t PruebasAlfashop.jmx -l results.jtl -e -o report"
                 }
             }
         }
