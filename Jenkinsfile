@@ -118,12 +118,19 @@ pipeline {
             }
         }
 
-        stage('Ejecutar pruebas Funcionales') {
+        stage('Pruebas Funcionales') {
             steps {
                 script {
                     dir('front') {
                         bat 'npm run cy:run'
                     }
+                }
+            }
+        }
+        stage('Pruebas de Rendimiento') {
+            steps {
+                script {
+                    bat "${env.JMETER_HOME}/jmeter.bat -n -t PruebasAlfashop -l results.jtl -e -o report"
                 }
             }
         }
