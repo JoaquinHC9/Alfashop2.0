@@ -243,7 +243,7 @@ Proyecto desarrollado en Java Spring boot y React Vite (Typescript)
 
 # 📜 Jenkins Pipeline
 
-Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop 2.0**. Incluye pasos para la construcción, pruebas, análisis de calidad, empaquetado y despliegue.
+Este pipeline está diseñado para automatizar el ciclo de vida de desarrollo de la aplicación **Alfashop**. Incluye pasos para la construcción, pruebas, análisis de calidad, empaquetado y despliegue.
 
 ## 🔧 Configuración de Herramientas
 
